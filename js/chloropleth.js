@@ -26,6 +26,11 @@ class chloropeth {
     initVis() {
         let vis = this;
 
+        const parentWidth = d3.select(vis.config.parentElement)
+                .node().getBoundingClientRect().width;
+                const translateX = (parentWidth - vis.config.containerWidth) / 2;
+
+
         // Calculate inner chart size. Margin specifies the space around the actual chart.
         vis.width =
             vis.config.containerWidth -
@@ -120,7 +125,7 @@ class chloropeth {
             ])
             // Reset the filtered counties
             .on("start", () => (filteredCounties = []))
-            .on("end", (result) => vis.filterBySelection(result, vis));
+            .on("end", (result) => vis.SelectCounties(result, vis));
 
         vis.countiesGroup = vis.g.append("g").attr("id", "counties");
 
@@ -277,4 +282,39 @@ class chloropeth {
 
         vis.brushG.call(vis.brush);
     }
+
+
+    SelectCounties(result, vis) {
+        if (!result.sourceEvent) return; // Only transition after input
+    
+        const extent = result.selection;
+    
+        if (!extent) {
+          // Reset the counties filter (include them all)
+          filteredCounties = [];
+        } else {
+          filteredCounties = topojson
+            .feature(vis.us, vis.us.objects.counties)
+            .features.filter((d) => {
+              // Use the path generator to create a bounding box for each county
+              const boundingBox = vis.path.bounds(d);
+              const xMin = boundingBox[0][0];
+              const yMin = boundingBox[0][1];
+              const xMax = boundingBox[1][0];
+              const yMax = boundingBox[1][1];
+    
+              // Check if the bounding box intersects with the selection box
+              return (
+                xMax >= extent[0][0] &&
+                xMin <= extent[1][0] &&
+                yMax >= extent[0][1] &&
+                yMin <= extent[1][1]
+              );
+            })
+            .map((d) => d.properties.cnty_fips);
+        }
+    
+        updateVisualizations(vis);
+      }
+
 }

@@ -21,6 +21,11 @@ class Combinedchart {
     initVis() {
         const vis = this;
 
+        const parentWidth = d3.select(vis.config.parentElement)
+                .node().getBoundingClientRect().width;
+                const translateX = (parentWidth - vis.config.containerWidth) / 2;
+
+
         // Create an SVG element and append it to the parent element
         vis.svg = d3
             .select(vis.config.parentElement)
@@ -89,7 +94,7 @@ class Combinedchart {
             ])
             // Reset the filtered counties
             .on("start", () => (filteredCounties = []))
-            .on("end", (result) => vis.filterBySelection(result, vis));
+            .on("end", (result) => vis.SelectCounties(result, vis));
 
         this.updateVis(); // Update the visualization
     }
@@ -178,7 +183,7 @@ class Combinedchart {
     }
 
     // Function to filter the data based on the selection
-    filterBySelection(result, vis) {
+    SelectCounties(result, vis) {
         if (!result.sourceEvent) return;
 
         const extent = result.selection;

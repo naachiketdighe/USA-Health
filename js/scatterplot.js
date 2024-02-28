@@ -18,6 +18,17 @@ class Scatterplot {
             initVis() {
                 const vis = this;
 
+                const totalWidth =
+                vis.config.containerWidth +
+                vis.config.margin.left +
+                vis.config.margin.right;
+
+                const parentWidth = d3.select(vis.config.parentElement)
+                .node().getBoundingClientRect().width;
+                const translateX = (parentWidth - vis.config.containerWidth) / 2;
+
+        
+
                 // Create the SVG container for the scatterplot
                 vis.svg = d3
                 .select(vis.config.parentElement)
@@ -37,7 +48,8 @@ class Scatterplot {
                 .append("g")
                 .attr(
                     "transform",
-                    `translate(${vis.config.margin.left},${vis.config.margin.top})`
+                    `translate(${vis.config.margin.left}, ${vis.config.margin.top})`
+
                 );
     
             // Create the x-axis scale and axis
@@ -60,7 +72,7 @@ class Scatterplot {
                     [vis.config.containerWidth, vis.config.containerHeight],
                 ])
                 .on("start", () => (filteredCounties = []))
-                .on("end", (result) => vis.filterBySelection(result, vis));
+                .on("end", (result) => vis.SelectCounties(result, vis));
     
             // Update the scatterplot visualization
             this.updateVis();
@@ -68,6 +80,7 @@ class Scatterplot {
 
         updateVis() {
                 const vis = this;
+                vis.brushG.call(vis.brush);
 
                 // Filter the data based on attribute values
                 vis.data = countiesData.filter(
@@ -138,5 +151,37 @@ class Scatterplot {
                             else return 0.1;
                         } else return 1;
                     });
+        
         }
-}
+
+        SelectCounties(result, vis) {
+            if (!result.sourceEvent) return; // Only transition after input
+        
+            const extent = result.selection;
+        
+            if (!extent) {
+              // Reset the counties filter (include them all)
+              filteredCounties = [];
+            } else {
+              // Filter the counties
+              const xRange = [vis.x.invert(extent[0][0]), vis.x.invert(extent[1][0])];
+              const yRange = [vis.y.invert(extent[1][1]), vis.y.invert(extent[0][1])];
+        
+              filteredCounties = countiesData
+                .filter((d) => {
+                  const attr1Val = d[vis.attributeName1];
+                  const attr2Val = d[vis.attributeName2];
+        
+                  return (
+                    attr1Val >= yRange[0] &&
+                    attr1Val <= yRange[1] &&
+                    attr2Val >= xRange[0] &&
+                    attr2Val <= xRange[1]
+                  );
+                })
+                .map((d) => d.cnty_fips);
+            }
+        
+            updateVisualizations(null);
+          }        
+        }
