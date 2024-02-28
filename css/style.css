@@ -1,0 +1,143 @@
+h1 {
+    font-size: 36px;
+    color: #333;
+    text-align: center;
+  }
+  
+  h3 {
+    font-size: 20px;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  p {
+    font-size: 18px;
+    color: #444;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+
+/* CSS for the attr-select class */
+.attr-select {
+    margin-bottom: 20px;
+  }
+  
+  /* CSS for the label inside attr-select */
+  .attr-select label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  /* CSS for the select box inside attr-select */
+  .attr-select select {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  /* CSS for the select box when focused */
+  .attr-select select:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  /* CSS for the select box when hovered */
+  .attr-select select:hover {
+    border-color: #007bff;
+  }
+  
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  .poverty-color {
+    background-color: #FFDAB9;
+  }
+  
+  .income-color {
+    background-color: #90EE90;
+  }
+  
+  .education-color {
+    background-color: #D8BFD8;
+  }
+  
+  .air-quality-color {
+    background-color: #ADD8E6;
+  }
+  
+  .park-access-color {
+    background-color: #367d3e;
+  }
+  
+  .inactive-color {
+    background-color: #FFC0CB;
+  }
+  
+  .smoking-color{
+  background-color: #D3D3D3;
+}
+
+.urban-rural-color {
+  background-color: #FFFFE0;
+}
+
+.elderly-color {
+  background-color: #E6E6FA;
+}
+
+.hospitals-color {
+  background-color: #E0FFFF;
+}
+
+.physicians-color {
+  background-color: #7FFFD4;
+}
+
+.insurance-color {
+  background-color: #FFA07A;
+}
+
+.blood-pressure-color {
+  background-color: #F08080;
+}
+
+.heart-disease-color {
+  background-color: #FFA07A;
+}
+
+.stroke-color {
+  background-color: #FF7377;
+}
+
+.cholesterol-color {
+  background-color: #87CEFA;
+}

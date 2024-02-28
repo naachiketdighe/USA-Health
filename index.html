@@ -1,18 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>D3 Project Starter Template</title>
+    <title>Health in the USA</title>
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,iVBORwOKGO=" />
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>    
     <!-- Add HTML content, SVG drawing area, ... -->
+    <main>
+        <header>
+            <h1 id="dashboardTitle">USA Health Dashboard</h1>
+        </header>       
+         <h3> By <a href="https://github.com/naachiketdighe">Nachi</a></h3>
+        <p> The data for the project can be found at <a href="https://www.cdc.gov/dhdsp/maps/atlas/index.htm"
+            >US Heart and Stroke Atlas</a>
+        </p>
+        <p> The <a href="https://d3js.org/">D3,js</a> library was used to visualize the data</p>
+  <table>
+    <tr>
+      <th>Attribute</th>
+      <th>Label</th>
+      <th>Color</th>
+    </tr>
+    <tr>
+      <td>Poverty %</td>
+      <td>Poverty Percentage</td>
+      <td class="poverty-color">#FFDAB9</td>
+    </tr>
+    <tr>
+      <td>Median Household Income</td>
+      <td>Median Household Income</td>
+      <td class="income-color">#90EE90</td>
+    </tr>
+    <tr>
+      <td>Education Less Than High School</td>
+      <td>Education Less Than High School Percentage</td>
+      <td class="education-color">#D8BFD8</td>
+    </tr>
+    <tr>
+      <td>Air Quality</td>
+      <td>Air Quality</td>
+      <td class="air-quality-color">#ADD8E6</td>
+    </tr>
+    <tr>
+      <td>Park Access</td>
+      <td>Park Access</td>
+      <td class="park-access-color">#367d3e</td>
+    </tr>
+    <tr>
+      <td>Inactive</td>
+      <td>Percent Inactive</td>
+      <td class="inactive-color">#FFC0CB</td>
+    </tr>
+    <tr>
+      <td>Smoking</td>
+      <td>Percent Smoking</td>
+      <td class="smoking-color">#FF69B4</td>
+    </tr>
+    <tr>
+      <td>Urban/Rural Status</td>
+      <td>Urban/Rural Status</td>
+      <td class="urban-rural-color">#B0C4DE</td>
+    </tr>
+    <tr>
+      <td>Elderly</td>
+      <td>Elderly Percentage</td>
+      <td class="elderly-color">#D8BFD8</td>
+    </tr>
+    <tr>
+      <td>Number of Hospitals</td>
+      <td>Number of Hospitals</td>
+      <td class="hospitals-color">#20B2AA</td>
+    </tr>
+    <tr>
+      <td>Number of Primary Care Physicians</td>
+      <td>Number of Primary Care Physicians</td>
+      <td class="physicians-color">#9370DB</td>
+    </tr>
+    <tr>
+      <td>No Health Insurance</td>
+      <td>Percent No Health Insurance</td>
+      <td class="insurance-color">#FF8C00</td>
+    </tr>
+    <tr>
+      <td>High Blood Pressure</td>
+      <td>Percent High Blood Pressure</td>
+      <td class="blood-pressure-color">#FF4500</td>
+    </tr>
+    <tr>
+      <td>Coronary Heart Disease</td>
+      <td>Percent Coronary Heart Disease</td>
+      <td class="heart-disease-color">#7B68EE</td>
+    </tr>
+    <tr>
+      <td>Stroke</td>
+      <td>Percent Stroke</td>
+      <td class="stroke-color">#FF7377</td>
+    </tr>
+    <tr>
+      <td>High Cholesterol</td>
+      <td>Percent High Cholesterol</td>
+      <td class="cholesterol-color">#87CEFA</td>
+    </tr>
+  </table>
+  <br><br>
+
+  <div class="flex-container-vis">
+    <div>
+        <div class="attr-select">
+            <label for="attributeSelect1"> Attribute 1 </label>
+            <select name="attributeSelect1" id="attributeSelect1"></select>
+        </div>
+        <div class="attr-select">
+            <label for="attributeSelect2"> Attribute 2 </label>
+            <select name="attributeSelect2" id="attributeSelect2"></select>
+    </div>
+    <h1>Distribution visualization via Histogram and/or Bargraph</h1>
+    <div id="hist1"></div>
+    <div id="bar1" style="display: none"></div>></div>
+    <div id="hist2"></div>
+    <div id="bar2" style="display: none"></div>
+    <br><br>
+    <h1>Correlation visualization via Scatterplot</h1>
+    <div id="scatterplot"></div>
+    <br><br>
+    <h1>Spatial visualization via Choropleth Map</h1>
+    <div id="choropleth1"></div>
+    <div id="choropleth2"></div>
+  </div>
+
+</body>
+</html>
+
+    </main>
+    
     
     <!-- D3 bundle -->
     <script src="js/d3.v6.min.js"></script>
 
     <!-- Our JS code -->
     <script src="js/main.js"></script>
+    <script src = "js/combinedchart.js"></script>
+    <script src="js/scatterplot.js"></script>
+    <script src = "js/chloropleth.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+
+
 </body>
 </html>
