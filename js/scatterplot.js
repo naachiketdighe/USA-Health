@@ -6,7 +6,7 @@ class Scatterplot {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 500,
             containerHeight: _config.containerHeight || 200,
-            margin: { top: 20, bottom: 50, right: 50, left: 65 },
+            margin: { top: 20, bottom: 50, right: 50, left: 50 },
         };
         // Names of the attributes used for x and y axes
         this.attributeName1 = _attributeName1;
@@ -21,26 +21,8 @@ class Scatterplot {
         const vis = this;
 
         // Create the SVG container for the scatterplot
-        vis.svg = d3
-            .select(vis.config.parentElement)
-            .append("svg")
-            .attr(
-                "width",
-                vis.config.containerWidth +
-                vis.config.margin.left +
-                vis.config.margin.right
-            )
-            .attr(
-                "height",
-                vis.config.containerHeight +
-                vis.config.margin.top +
-                vis.config.margin.bottom
-            )
-            .append("g")
-            .attr(
-                "transform",
-                `translate(${vis.config.margin.left}, ${vis.config.margin.top})`
-            );
+        vis.svg = d3.select(vis.config.parentElement).append("svg").attr("width",vis.config.containerWidth +vis.config.margin.left +vis.config.margin.right)
+            .attr("height",vis.config.containerHeight +vis.config.margin.top +vis.config.margin.bottom).append("g").attr( "transform",`translate(${vis.config.margin.left}, ${vis.config.margin.top})`);
 
         // Create the y-axis scale and axis
         vis.y = d3.scaleLinear().range([vis.config.containerHeight, 0]);
@@ -48,21 +30,15 @@ class Scatterplot {
 
         // Create the x-axis scale and axis
         vis.x = d3.scaleLinear().range([0, vis.config.containerWidth]);
-        vis.xAxis = vis.svg
-            .append("g")
-            .attr("transform", `translate(0,${vis.config.containerHeight})`);
+        vis.xAxis = vis.svg.append("g").attr("transform", `translate(0,${vis.config.containerHeight})`);
 
         // Create the brush for selection
         vis.brushG = vis.svg.append("g").attr("class", "brush");
 
-        vis.brush = d3
-            .brush()
-            .extent([
-                [0, 0],
-                [vis.config.containerWidth, vis.config.containerHeight],
+        vis.brush = d3.brush().extent([
+                [0, 0],[vis.config.containerWidth, vis.config.containerHeight],
             ])
-            .on("start", () => (filteredCounties = []))
-            .on("end", (result) => vis.SelectCounties(result, vis));
+            .on("start", () => (filteredCounties = [])).on("end", (result) => vis.SelectCounties(result, vis));
 
         // Update the scatterplot visualization
         this.updateVis();
@@ -89,50 +65,18 @@ class Scatterplot {
         vis.yAxis.call(d3.axisLeft(vis.y));
 
         // Add y-axis label
-        vis.svg
-            .selectAll("text.yLabel")
-            .data([vis.attributeName1])
-            .join("text")
-            .attr("class", "yLabel")
-            .attr("transform", "rotate(-90)")
-            .attr(
-                "y",
-                0 - vis.config.margin.left
-            )
-            .attr("x", 0 - vis.config.containerHeight / 2)
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text(attr[vis.attributeName1].label);
+        vis.svg.selectAll("text.yLabel").data([vis.attributeName1]).join("text").attr("class", "yLabel").attr("transform", "rotate(-90)").attr("y",0 - vis.config.margin.left)
+            .attr("x", 0 - vis.config.containerHeight / 2).attr("dy", "1em").style("text-anchor", "middle").text(attr[vis.attributeName1].label);
 
         // Add x-axis label
-        vis.svg
-            .selectAll("text.xLabel")
-            .data([vis.attributeName2])
-            .join("text")
-            .attr("class", "xLabel")
-            .attr(
-                "transform",
-                "translate(" +
-                vis.config.containerWidth / 2 +
-                " ," +
-                (vis.config.containerHeight + 35) +
-                ")"
-            )
+        vis.svg.selectAll("text.xLabel").data([vis.attributeName2]).join("text").attr("class", "xLabel").attr("transform","translate(" +vis.config.containerWidth / 2 +" ," +(vis.config.containerHeight + 35) +")")
             .style("text-anchor", "middle")
             .text(attr[vis.attributeName2].label);
 
     // Select all circles with class 'regularPoint', bind data, and create/update circles
-vis.svg.selectAll("circle.regularPoint")
-.data(vis.data)
-.join("circle")
-.attr("class", "regularPoint")
-.attr("cx", (d) => vis.x(d[vis.attributeName2])) // Set x-coordinate
-.attr("cy", (d) => vis.y(d[vis.attributeName1])) // Set y-coordinate
-.attr("r", 3) // Set circle radius
-.style("fill", (d) => { // Set fill color based on attribute colors
-    const fillColor = `color-mix(in srgb, ${attr[vis.attributeName1].color}, ${attr[vis.attributeName2].color}`;
-    return fillColor;
-})
+vis.svg.selectAll("circle.regularPoint").data(vis.data).join("circle").attr("class", "regularPoint").attr("cx", (d) => vis.x(d[vis.attributeName2])).attr("cy", (d) => vis.y(d[vis.attributeName1])).attr("r", 3) // Set circle radius
+.style("fill", (d) => `color-mix(in srgb, ${attr[vis.attributeName1].color}, ${attr[vis.attributeName2].color})`)
+
 .style("fill-opacity", (d) => { // Set fill opacity based on filtered counties
     if (filteredCounties.length !== 0) {
         if (filteredCounties.find((filteredCounty) => filteredCounty == d.cnty_fips))
@@ -144,7 +88,10 @@ vis.svg.selectAll("circle.regularPoint")
 
 });
 
+
 }
+
+
 
 
     // Method to select counties based on brush selection

@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,iVBORwOKGO=" />
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="public/favicon.jpg" type="image/x-icon" />
+
 </head>
 <body>    
     <!-- Add HTML content, SVG drawing area, ... -->
-    <main>
         <header>
             <h1 id="dashboardTitle">USA Health Dashboard</h1>
         </header>       
@@ -117,12 +118,10 @@
             <select name="attributeSelect2" id="attributeSelect2"></select>
     </div>
     <h1>Distribution visualization via Histogram and/or Bargraph</h1>
-    <div class="combinedchart-container">
     <div id="hist1"></div>
     <div id="bar1" style="display: none"></div></div>
     <div id="hist2"></div>
     <div id="bar2" style="display: none"></div>
-    </div>
     <br><br>
     <h1 id="scatterplot-text">Correlation visualization via Scatterplot</h1>
     <div id="scatterplot"></div>
@@ -132,10 +131,14 @@
     <div id="choropleth2"></div>
   </div>
 
-</body>
-</html>
 
-    </main>
+  <svg height="5" width="5" xmlns="http://www.w3.org/2000/svg" version="1.1"> <defs> <pattern id="lightstripe" patternUnits="userSpaceOnUse" width="5" height="5"> <image xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1JyBoZWlnaHQ9JzUnPgogIDxyZWN0IHdpZHRoPSc1JyBoZWlnaHQ9JzUnIGZpbGw9J3doaXRlJy8+CiAgPHBhdGggZD0nTTAgNUw1IDBaTTYgNEw0IDZaTS0xIDFMMSAtMVonIHN0cm9rZT0nIzg4OCcgc3Ryb2tlLXdpZHRoPScxJy8+Cjwvc3ZnPg==" x="0" y="0" width="5" height="5"> </image> </pattern> </defs></svg>
+</body>
+
+
+    <!-- for Chloropleth map d3.js -->
+
+
 
     
     
@@ -150,6 +153,4 @@
     <script src="js/main.js"></script>
    
 
-
-</body>
 </html>

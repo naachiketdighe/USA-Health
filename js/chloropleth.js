@@ -1,7 +1,7 @@
 // edited code from https://codesandbox.io/p/sandbox/github/UBC-InfoVis/2021-436V-examples/tree/master/d3-choropleth-map?file=%2Fjs%2FchoroplethMap.js
 class chloropeth 
 {
-    constructor(_config, attributeName, _num) 
+    constructor(_config, _attributeName, _num, _geoData) 
     {
         // Set the configuration options for the visualization
         this.config = 
@@ -9,16 +9,16 @@ class chloropeth
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 500,
             containerHeight: _config.containerHeight || 400,
-            margin: _config.margin || {top: 5, right: 5, bottom: 5, left: 5},
-            color: attr[attributeName].color,
+            margin: _config.margin || {top: 15, right: 15, bottom: 15, left: 5},
+            color: attr[_attributeName].color,
             legendBottom: 20,
             legendLeft: 50,
             legendRectHeight: 12,
             legendRectWidth: 300,
         };
-        this.us = geoData;
+        this.us = _geoData;
         this.number = _num;
-        this.attributeName = attributeName;
+        this.attributeName = _attributeName;
 
         // Initialize the visualization
         this.initVis();
@@ -32,7 +32,7 @@ initVis()
     const parentWidth = d3.select(vis.config.parentElement).node().getBoundingClientRect().width;
     const translateX = (parentWidth - vis.config.containerWidth) / 2;
 
-    // Calculate inner chart size. Margin specifies the space around the actual chart.
+    // Calculate the inner chart size based on the margins in the chart
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
@@ -42,7 +42,7 @@ initVis()
     // Create main chart group
     vis.chart = vis.svg.append("g").attr("transform",`translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
-    // Set up map projection
+    // Set up map projection from https://github.com/topojson/us-atlas
     vis.projection = d3.geoAlbersUsa().translate([vis.width / 2, vis.height / 2]).scale(vis.width);
 
     // Create path generator
@@ -70,15 +70,13 @@ initVis()
     vis.brushG = vis.g.append("g").attr("class", "brush");
 
     // Define brush behavior
-    vis.brush = d3
-        .brush()
-        .extent([
+    vis.brush = d3.brush()
+    .extent([
             [0, 0],
             [vis.config.containerWidth, vis.config.containerHeight],
-        ])
+            ])
         // Reset the filtered counties
-        .on("start", () => (filteredCounties = []))
-        .on("end", (result) => vis.SelectCounties(result, vis));
+        .on("start", () => (filteredCounties = [])).on("end", (result) => vis.SelectCounties(result, vis));
 
     // Create grouped counties group
     vis.groupedCounties = vis.g.append("g").attr("id", "counties");
@@ -100,18 +98,8 @@ updateVis() {
     );
 
     // Create legend title
-    vis.legendTitle = vis.legend
-        .selectAll(".legend-title")
-        .data([vis.attributeName])
-        .join("text")
-        .attr("class", "legend-title")
-        .attr("dy", ".35em")
-        .attr("y", -10)
-        .text(attr[vis.attributeName].label)
-        .style(
-            "display",
-            vis.attributeName === "urban_rural_status" ? "none" : "block"
-        );
+    vis.legendTitle = vis.legend.selectAll(".legend-title").data([vis.attributeName]).join("text").attr("class", "legend-title").attr("dy", ".35em")
+        .attr("y", -10).text(attr[vis.attributeName].label).style("display",vis.attributeName === "urban_rural_status" ? "none" : "block");
 
     // Calculate attribute extent
     const attributeExtent = d3.extent(
@@ -121,31 +109,21 @@ updateVis() {
 
     // Create color scale based on attribute type
     if (vis.attributeName === "urban_rural_status") {
-        vis.colorScale = d3
-            .scaleOrdinal()
-            .domain(["Rural", "Small City", "Suburban", "Urban"])
-            .range(['lightgrey', '#FFD700', '#87CEEB', '#FF6347']);
+        vis.colorScale = d3.scaleOrdinal().domain(["Rural", "Small City", "Suburban", "Urban"]).range(['lightgrey', '#FFD700', '#87CEEB', '#FF6347']);
     } else {
-        vis.colorScale = d3
-            .scaleLinear()
-            .domain(attributeExtent)
-            .range(["#ffffff", vis.config.color])
-            .interpolate(d3.interpolateHcl);
+        vis.colorScale = d3.scaleLinear().domain(attributeExtent).range(["#ffffff", vis.config.color]).interpolate(d3.interpolateHcl);
     }
 
     // Draw counties on the map
     vis.counties = vis.groupedCounties
-        .selectAll("path")
-        .data(
+        .selectAll("path").data(
             topojson.feature(vis.us, vis.us.objects.counties).features
         )
-        .join("path")
-        .attr("d", vis.path)
-        .attr("fill", (d) => {
+        .join("path").attr("d", vis.path).attr("fill", (d) => {
             const coloredOrStripe =
                 d.properties[vis.attributeName] != -1
                     ? vis.colorScale(d.properties[vis.attributeName])
-                    : "#f0f0f0";
+                    : '#url(#lightstripe)';
             return filteredCounties.length !== 0
                 ? filteredCounties.find(
                         (filteredCounty) => filteredCounty == d.properties.cnty_fips
@@ -172,78 +150,33 @@ updateVis() {
 
     // Append legend color squares
     vis.legend
-        .selectAll("rect.choroplethColor")
-        .data(["Rural", "Small City", "Suburban", "Urban"])
-        .join("rect")
-        .attr("class", "choroplethColor")
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", (d) => vis.colorScale(d))
-        .style("stroke", (d) => vis.colorScale(d))
-        .attr(
-            "transform",
-            (d, index) => `translate(${vis.config.margin.left + index * 100},${0})`
+        .selectAll("rect.choroplethColor").data(["Rural", "Small City", "Suburban", "Urban"]).join("rect").attr("class", "choroplethColor")
+        .attr("width", 18).attr("height", 18).style("fill", (d) => vis.colorScale(d)).style("stroke", (d) => vis.colorScale(d))
+        .attr("transform",(d, index) => `translate(${vis.config.margin.left + index * 100},${0})`
         )
-        .style(
-            "display",
-            vis.attributeName === "urban_rural_status" ? "block" : "none"
-        );
+        .style("display",vis.attributeName === "urban_rural_status" ? "block" : "none");
 
     // Append legend color labels
     vis.legend
-        .selectAll("text.choroplethColorLabel")
-        .data(["Rural", "Small City", "Suburban", "Urban"])
-        .join("text")
-        .attr("class", "choroplethColorLabel")
-        .attr("x", 22)
-        .attr("y", 14)
-        .text((d) => d)
-        .attr(
-            "transform",
-            (d, index) => `translate(${vis.config.margin.left + index * 100},${0})`
-        )
-        .style(
-            "display",
-            vis.attributeName === "urban_rural_status" ? "block" : "none"
-        );
+        .selectAll("text.choroplethColorLabel").data(["Rural", "Small City", "Suburban", "Urban"]).join("text").attr("class", "choroplethColorLabel").attr("x", 22)
+        .attr("y", 14).text((d) => d).attr("transform",(d, index) => `translate(${vis.config.margin.left + index * 100},${0})`)
+        .style("display",vis.attributeName === "urban_rural_status" ? "block" : "none");
 
     // Add legend labels
-    vis.legend
-        .selectAll(".legend-label")
-        .data(vis.legendStops)
-        .join("text")
-        .attr("class", "legend-label")
-        .attr("text-anchor", "middle")
-        .attr("dy", ".35em")
-        .attr("y", 20)
-        .attr("x", (d, index) => {
+    vis.legend.selectAll(".legend-label").data(vis.legendStops).join("text").attr("class", "legend-label").attr("text-anchor", "middle")
+        .attr("dy", ".35em").attr("y", 20).attr("x", (d, index) => 
+        {
             return index == 0 ? 0 : vis.config.legendRectWidth;
         })
         .text((d) => Math.round(d.value * 10) / 10)
-        .style(
-            "display",
-            vis.attributeName === "urban_rural_status" ? "none" : "block"
-        );
+        .style("display",vis.attributeName === "urban_rural_status" ? "none" : "block");
 
     // Update gradient for legend
-    vis.linearGradient
-        .selectAll("stop")
-        .data(vis.legendStops)
-        .join("stop")
-        .attr("offset", (d) => d.offset)
-        .attr("stop-color", (d) => d.color)
-        .style(
-            "display",
-            vis.attributeName === "urban_rural_status" ? "none" : "block"
-        );
+    vis.linearGradient.selectAll("stop").data(vis.legendStops).join("stop").attr("offset", (d) => d.offset)
+        .attr("stop-color", (d) => d.color).style("display",vis.attributeName === "urban_rural_status" ? "none" : "block");
 
     // Apply gradient to legend rectangle
-    vis.legendRect
-        .attr("fill", `url(#legend-gradient-${vis.number})`)
-        .style(
-            "display",
-            vis.attributeName === "urban_rural_status" ? "none" : "block"
-        );
+    vis.legendRect.attr("fill", `url(#legend-gradient-${vis.number})`).style("display",vis.attributeName === "urban_rural_status" ? "none" : "block");
 
     // Call brush function
     vis.brushG.call(vis.brush);
