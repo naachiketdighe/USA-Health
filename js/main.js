@@ -161,45 +161,7 @@ Promise.all([
           choropleth1.brushG.call(choropleth1.brush.move, null);
         if (currentVis != choropleth2)
           choropleth2.brushG.call(choropleth2.brush.move, null);
-      };
-
-
-    // const handleAttributeSelectChange = (event, attributeSelect) => {
-    //     const selectedAttr = event.target.value;
-    //     const histogramElement = document.getElementById(`hist${attributeSelect}`);
-    //     const barchartElement = document.getElementById(`bar${attributeSelect}`);
-    //     const scatterplotElement = document.getElementById("scatterplot");
-    //     scatterplot.attributeName1 = selectedAttr;
-    //     scatterplot.attributeName2 = selectedAttr2; // Update attribute 2
-    //     scatterplot.updateVis(); // Call updateVis method
-
-    
-    //     if (selectedAttr === "urban_rural_status") {
-    //         histogramElement.style.display = "none";
-    //         barchartElement.style.display = "block";
-    //         scatterplotElement.style.display = "none";
-    //     } else {
-    //         histogramElement.style.display = "block";
-    //         barchartElement.style.display = "none";
-    //         scatterplotElement.style.display = "block";
-    //     }
-    
-    //     const hist = attributeSelect === 1 ? hist1 : hist2;
-    //     hist.attributeName = selectedAttr;
-    //     scatterplot[`attribute${attributeSelect}Name`] = selectedAttr;
-    //     const choropleth = attributeSelect === 1 ? choropleth1 : choropleth2;
-    //     choropleth.attributeName = selectedAttr;
-    //     updateVisualizations(null);
-    // };
-    
-    // attributeSelect1.onchange = (event) => {
-    //     handleAttributeSelectChange(event, 1);
-    // };
-    
-    // attributeSelect2.onchange = (event) => {
-    //     handleAttributeSelectChange(event, 2);
-    // };
-    
+      };    
     
     const handleAttributeSelectChange = (event, attributeSelect) => {
       const selectedAttr = event.target.value;

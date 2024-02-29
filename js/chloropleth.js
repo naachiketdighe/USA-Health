@@ -121,9 +121,10 @@ updateVis() {
         )
         .join("path").attr("d", vis.path).attr("fill", (d) => {
             const coloredOrStripe =
-                d.properties[vis.attributeName] != -1
-                    ? vis.colorScale(d.properties[vis.attributeName])
-                    : '#url(#lightstripe)';
+    d.properties[vis.attributeName] != -1
+        ? vis.colorScale(d.properties[vis.attributeName])
+        : 'url(#lightstripe)';
+
             return filteredCounties.length !== 0
                 ? filteredCounties.find(
                         (filteredCounty) => filteredCounty == d.properties.cnty_fips
