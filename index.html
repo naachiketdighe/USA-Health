@@ -24,14 +24,14 @@
       <th>Color</th>
     </tr>
     <tr>
-      <td>Poverty %</td>
+      <td>Poverty</td>
       <td>Poverty Percentage</td>
-      <td class="poverty-color">#FFDAB9</td>
+      <td class="poverty-color">#FFD700</td>
     </tr>
     <tr>
       <td>Median Household Income</td>
       <td>Median Household Income</td>
-      <td class="income-color">#90EE90</td>
+      <td class="income-color">#FF5733</td>
     </tr>
     <tr>
       <td>Education Less Than High School</td>
@@ -101,7 +101,7 @@
     <tr>
       <td>High Cholesterol</td>
       <td>Percent High Cholesterol</td>
-      <td class="cholesterol-color">#87CEFA</td>
+      <td class="cholesterol-color">#FF5733</td>
     </tr>
   </table>
   <br><br>
@@ -117,12 +117,14 @@
             <select name="attributeSelect2" id="attributeSelect2"></select>
     </div>
     <h1>Distribution visualization via Histogram and/or Bargraph</h1>
+    <div class="combinedchart-container">
     <div id="hist1"></div>
-    <div id="bar1" style="display: none"></div>></div>
+    <div id="bar1" style="display: none"></div></div>
     <div id="hist2"></div>
     <div id="bar2" style="display: none"></div>
+    </div>
     <br><br>
-    <h1>Correlation visualization via Scatterplot</h1>
+    <h1 id="scatterplot-text">Correlation visualization via Scatterplot</h1>
     <div id="scatterplot"></div>
     <br><br>
     <h1>Spatial visualization via Choropleth Map</h1>
@@ -134,17 +136,19 @@
 </html>
 
     </main>
+
     
     
     <!-- D3 bundle -->
     <script src="js/d3.v6.min.js"></script>
 
     <!-- Our JS code -->
-    <script src="js/main.js"></script>
     <script src = "js/combinedchart.js"></script>
     <script src="js/scatterplot.js"></script>
     <script src = "js/chloropleth.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
+    <script src="js/main.js"></script>
+   
 
 
 </body>
