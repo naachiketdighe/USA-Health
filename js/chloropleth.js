@@ -55,7 +55,7 @@ initVis()
         .attr("width",vis.width + vis.config.margin.left + vis.config.margin.right);
 
     // Draw state borders
-    vis.svg.append("path").datum(topojson.mesh(vis.us, vis.us.objects.states, (a, b) => a !== b)).attr("id", "state-borders").attr("d", vis.path).attr("transform","translate(" + vis.config.margin.left +"," +vis.config.margin.top +")");
+    vis.svg.append("g").datum(topojson.mesh(vis.us, vis.us.objects.states, (a, b) => a !== b)).attr("id", "state-borders").attr("d", vis.path).attr("transform","translate(" + vis.config.margin.left +"," +vis.config.margin.top +")");
 
     // Append legend
     vis.legend = vis.chart.append("g").attr("transform",`translate(${vis.config.legendLeft},${vis.height - vis.config.legendBottom})`);

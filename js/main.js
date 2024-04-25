@@ -15,8 +15,8 @@ let attributeSelect2 = "median_household_income"
 
 
 const attr = {
-    poverty_perc: { label: "Poverty %", color: "#FFD700" }, // light orange
-    median_household_income: { label: "Median Household Income $", color: "#90EE90" }, // light green
+    poverty_perc: { label: "Poverty %", color: "#feb24c" }, // light orange
+    median_household_income: { label: "Median Household Income $", color: "#2ca25f" }, // light green
     education_less_than_high_school_percent: { label: "Education Less Than High School %", color: "#FF5733" }, // light purple
     air_quality: { label: "Air Quality", color: "#ADD8E6" }, // light blue
     park_access: { label: "Park Access", color: "#367d3e" }, // dark green
